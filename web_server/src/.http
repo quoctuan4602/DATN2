@@ -1,0 +1,14 @@
+##
+GET  http://localhost:3000/films
+
+
+###
+
+
+PUT  http://localhost:3000/films/rating
+Content-Type: "application/json"
+
+{
+  "filmId":"66f17e7d0d189a2ae366645a",
+  "rating":4
+}
