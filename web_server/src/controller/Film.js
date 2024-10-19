@@ -3,12 +3,14 @@ const Film = require("../models/Film");
 const create = async (req, res) => {
   const name = req.body["name"];
   const type = req.body["type"];
+  const actor = req.body["actor"];
+  const year = req.body["year"];
   const description = req.body["description"];
 
   const image = req.files["image"] ? req.files["image"][0].filename : null;
   const video = req.files["video"] ? req.files["video"][0].filename : null;
 
-  const film = new Film({ name, description, image, video, type });
+  const film = new Film({ name, description, image, video, type, year, actor });
 
   try {
     const savedFilm = await film.save();
