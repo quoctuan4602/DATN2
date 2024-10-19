@@ -1,14 +1,50 @@
 ##
-GET  http://localhost:3000/films
+GET    http://localhost:3000/films
+###
+PUT     http://localhost:3000/films/actorId/6713cb78ba2b05818e6e09b5
+###
+GET    http://localhost:3000/actors
 
+##
+POST   http://localhost:3000/actors
+Content-Type:  application/json
+
+{
+  "name": "Leonardo DiCaprio",
+  "birthDate": "1974-11-11",
+  "biography": "An American actor, producer, and environmentalist.",
+  "films": [],
+  "awards": ["Academy Award", "Golden Globe"],
+  "image": "https://example.com/images/leonardo.jpg"
+}
+
+###
+##
+GET    http://localhost:3000/types
+
+###
+POST   http://localhost:3000/types
+Content-Type:  application/json
+
+{
+  "name": "Action",
+  "description": "A genre characterized by physical feats and high-energy sequences."
+}
 
 ###
 
 
-PUT  http://localhost:3000/films/rating
+PUT  http://localhost:3000/
 Content-Type: application/json
 
 {
   "filmId":"66f17e7d0d189a2ae366645a",
   "rating":4
+}
+####
+GET  http://localhost:3000/films/filters
+Content-Type: application/json
+
+{
+  "year": 2000
 }

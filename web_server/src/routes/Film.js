@@ -1,5 +1,5 @@
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 const {
   create,
   getAll,
@@ -9,12 +9,14 @@ const {
   search,
   getType,
   addRating,
-} = require('../controller/Film');
-const multer = require('multer');
+  setActor,
+  filter,
+} = require("../controller/Film");
+const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Directory to save uploaded files
+    cb(null, "uploads/"); // Directory to save uploaded files
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -27,19 +29,21 @@ const upload = multer({ storage, limits: { fileSize: 100 * 1024 * 1024 } });
 const router = express.Router();
 
 router.post(
-  '/',
+  "/",
   upload.fields([
-    { name: 'image', maxCount: 1 },
-    { name: 'video', maxCount: 1 },
+    { name: "image", maxCount: 1 },
+    { name: "video", maxCount: 1 },
   ]),
-  create,
+  create
 );
-router.get('', getAll);
-router.get('/:id', getById);
-router.get('/search/:name', search);
-router.get('/type/:name', getType);
-router.put('/update/:id', update);
-router.put('/rating', addRating);
-router.delete('/:id', remove);
+router.get("", getAll);
+router.get("/filmId/:id", getById);
+router.get("/search/:name", search);
+router.get("/type/:name", getType);
+router.put("/update/:id", update);
+router.put("/rating", addRating);
+router.delete("/:id", remove);
+router.get("/filters", filter);
+router.put("/actorId/:actorId", setActor);
 
 module.exports = router;

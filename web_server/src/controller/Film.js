@@ -21,7 +21,9 @@ const create = async (req, res) => {
 // Get all films
 const getAll = async (req, res) => {
   try {
-    const films = await Film.find();
+    const films = await Film.find()
+      .populate("type") // Populate the Type reference
+      .populate("actors");
     res.json(films);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -135,6 +137,53 @@ const addRating = async (req, res) => {
     });
   }
 };
+
+const setActor = async (req, res) => {
+  const actorId = req.params.actorId; // Get the actor ID from the URL
+
+  try {
+    const films = await Film.updateMany(
+      {},
+      { $addToSet: { actors: actorId } } // Add the actor ID to the actors array if it doesn't already exist
+    );
+
+    res.send({
+      message: "Actor added to all films.",
+      filmsUpdated: films.modifiedCount, // Number of films updated
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const filter = async (req, res) => {
+  const { year, actor, type } = req.query; // Get filter parameters from query
+
+  // Build the filter object
+  const filter = {};
+
+  if (year) {
+    filter.year = year; // Match films with specific year
+  }
+
+  if (actor) {
+    filter.actors = actor; // Match films with specific actor ID
+  }
+
+  if (type) {
+    filter.type = type; // Match films with specific type ID
+  }
+
+  try {
+    const films = await Film.find(filter)
+      .populate("type") // Populate type reference
+      .populate("actors"); // Populate actor references
+
+    res.send(films);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
 module.exports = {
   create,
   getAll,
@@ -144,4 +193,6 @@ module.exports = {
   search,
   getType,
   addRating,
+  setActor,
+  filter,
 };
