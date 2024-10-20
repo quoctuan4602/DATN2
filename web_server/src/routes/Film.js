@@ -11,6 +11,7 @@ const {
   addRating,
   setActor,
   filter,
+  setType,
 } = require("../controller/Film");
 const multer = require("multer");
 
@@ -45,5 +46,6 @@ router.put("/rating", addRating);
 router.delete("/:id", remove);
 router.get("/filters", filter);
 router.put("/actorId/:actorId", setActor);
+router.put("/typeId/:typeId", setType);
 
 module.exports = router;

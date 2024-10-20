@@ -104,6 +104,7 @@ const getType = async (req, res) => {
 const addRating = async (req, res) => {
   try {
     const { filmId, rating } = req.body;
+    console.log("🚀 ~ addRating ~ filmId:", filmId);
 
     // Check if the rating is valid
     if (rating < 1 || rating > 10) {
@@ -126,11 +127,9 @@ const addRating = async (req, res) => {
     await film.save();
 
     // Calculate the average rating
-    const averageRating = film.rateCount / film.ratePeopleCount;
 
     res.status(200).json({
       message: "Rating added successfully",
-      averageRating: averageRating.toFixed(2),
     });
   } catch (error) {
     res.status(500).json({
@@ -148,6 +147,20 @@ const setActor = async (req, res) => {
       {},
       { $addToSet: { actors: actorId } } // Add the actor ID to the actors array if it doesn't already exist
     );
+
+    res.send({
+      message: "Actor added to all films.",
+      filmsUpdated: films.modifiedCount, // Number of films updated
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+const setType = async (req, res) => {
+  const typeId = req.params.typeId; // Get the actor ID from the URL
+
+  try {
+    const films = await Film.updateMany({}, { type: typeId });
 
     res.send({
       message: "Actor added to all films.",
@@ -197,4 +210,5 @@ module.exports = {
   addRating,
   setActor,
   filter,
+  setType,
 };

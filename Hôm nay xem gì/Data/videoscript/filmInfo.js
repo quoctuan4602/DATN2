@@ -23,7 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let filmID = "";
   const fetchMovieDate = async () => {
-    fetch("http://localhost:3000/films")
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Get the value of a specific parameter, e.g., 'id'
+    const paramValue = urlParams.get("id");
+    fetch("http://localhost:3000/films/filmId/" + paramValue)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok " + response.statusText);
@@ -32,34 +36,29 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((res) => {
         let filmRennder = "";
-        let index = Math.floor(Math.random() * (res.length + 1));
-        filmId = res[index]._id;
+        filmId = res._id;
         filmRennder += `<div class="card  mb-3 " style="background:black">
           <div class="border d-flex ">
             <img src="http://localhost:3000/uploads/${
-              res[index]?.image
+              res?.image
             }" class="card-img-top image_size"  alt="..." >
             <div class="">
-              <h5 class="text-white filmname">${res[index]?.name}</h5>
+              <h5 class="text-white filmname">${res?.name}</h5>
               <h5 class="text-white bordered-class">Thể loại: ${
-                res[index]?.type ? res[index].type : "Không"
+                res?.type ? res.type : "Không"
               }</h5>
               <p class="text-white bordered-paragraph ">Mô tả: ${
-                res[index]?.description
+                res?.description
               }</p>
               <p class="p-4 " id="rating">`;
         for (let i = 1; i < 10; i++) {
           filmRennder += `<i data-id="${i}" class="fa-solid ${
-            i < res[index].rateCount / res[index].ratePeopleCount
-              ? "text-warning"
-              : ""
+            i < res.rateCount / res.ratePeopleCount ? "text-warning" : ""
           } fa-star"></i>`;
         }
         filmRennder += `</p>
         <div class="p-4" id="rate_avagere">
-        Trung Binh : ${(
-          res[index].rateCount / res[index].ratePeopleCount
-        ).toFixed(2)}}
+        Trung Binh : ${(res.rateCount / res.ratePeopleCount).toFixed(2)}
         </div>
         <p>
         </p>
@@ -68,12 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
                   <button id="watchFilm" class="btn btn-warning mt-3">Xem Trailer</button>
                   </div>
               <video id='videoRef' src='http://localhost:3000/uploads/${
-                res[index]?.video
+                res?.video
               }' width='100%' controls="controls" preload="none"></video>
               `;
-        filmID = res[index]._id;
+        filmID = res._id;
         document.getElementById("#genreselected").innerHTML = filmRennder;
-        localStorage.setItem("filmId", res[index]._id);
+        localStorage.setItem("filmId", res._id);
         fetchMovieComment();
         document.getElementById("watchFilm").addEventListener("click", () => {
           document.getElementById("videoRef").play();
@@ -109,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
                   );
                 }
                 alert("Bạn đã đánh giá thành công.");
-                window.location.reload();
               })
               .catch((error) => {
                 console.error(

@@ -6,7 +6,7 @@ const filmSchema = new mongoose.Schema({
   description: { type: String, required: true },
   image: { type: String, required: true },
   video: { type: String, required: true },
-  type: { type: mongoose.Schema.Types.ObjectId, ref: "Type", required: true }, // Reference to Type model
+  type: { type: mongoose.Schema.Types.ObjectId, ref: "Type" }, // Reference to Type model
   actors: [{ type: mongoose.Schema.Types.ObjectId, ref: "actor" }], // Array
   rateCount: { type: Number, default: 0 },
   ratePeopleCount: { type: Number, default: 0 },

@@ -68,9 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         let html = "";
         data.forEach((film) => {
-          html += `<div class="shadow-lg  border rounded-lg  overflow-hidden">
-            <img class="object-cover" 
+          html += `<a href="./filmInfo.html?id=${
+            film._id
+          }" class="shadow-lg  border rounded-lg  overflow-hidden">
+            <img 
+            class="h-[400px] w-[100%]"
             src="http://localhost:3000/uploads/${film?.image}"
+            height="450px"
             alt="Cám">
             <div class="p-4">
                 <h2 class="text-2xl font-bold text-gray-800">${
@@ -86,11 +90,8 @@ document.addEventListener("DOMContentLoaded", function () {
                   film?.ratePeopleCount
                 } votes)</span>
                 </div>
-                <a href="path/to/videos/1727102588996.mp4" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-                Watch Trailer
-                </a>
             </div>
-            </div>
+            </a>
             `;
         });
         document.getElementById("filmList").innerHTML = html;
